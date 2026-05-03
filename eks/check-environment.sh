@@ -35,6 +35,24 @@ if ! command -v jq > /dev/null ; then
     return
 fi
 
+if ! command -v kubectl > /dev/null ; then
+    echo -e "${RED}kubectl is not installed. Please install it before deploying EKS add-ons.${NC}"
+    return
+fi
+
+if ! command -v helm > /dev/null ; then
+    echo -e "${RED}helm is not installed. Install it with ../get_helm.sh or https://helm.sh/docs/intro/install/.${NC}"
+    return
+fi
+
+helm_version=$(helm version --short --client 2>/dev/null || true)
+if [[ -z "$helm_version" ]]; then
+    echo -e "${RED}helm is installed but did not return a client version. Reinstall or fix helm before continuing.${NC}"
+    return
+fi
+
+echo -e "${GREEN}- Helm installed: ${helm_version}${NC}"
+
 # Verify correct region
 current_region=$AWS_REGION
 

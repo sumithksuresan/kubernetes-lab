@@ -37,9 +37,9 @@ variable "node_role_name" {
 
 # KK Playground. Policy role must be called 'eksPolicy'
 variable "additional_policy_name" {
-    type = string
-    description = "Name of IAM::Policy created for additional permissions"
-    default = "eksPolicy"
+  type        = string
+  description = "Name of IAM::Policy created for additional permissions"
+  default     = "eksPolicy"
 }
 
 variable "node_group_desired_capacity" {
