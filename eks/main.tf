@@ -29,10 +29,3 @@ output "NodeSecurityGroup" {
 output "NodeAutoScalingGroup" {
   value = aws_cloudformation_stack.autoscaling_group.outputs["NodeAutoScalingGroup"]
 }
-output "LoadBalancerControllerRoleArn" {
-  value = aws_iam_role.aws_load_balancer_controller.arn
-}
-
-output "VpcId" {
-  value = data.aws_vpc.default_vpc.id
-}

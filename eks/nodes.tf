@@ -74,7 +74,7 @@ resource "aws_iam_role_policy_attachment" "node_instance_role_SSMMIC" {
 }
 
 resource "aws_iam_role_policy_attachment" "node_instance_role_loadbalancer" {
-  policy_arn = aws_iam_policy.loadbalancer_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess"
   role       = aws_iam_role.node_instance_role.name
 }
 
