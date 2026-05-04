@@ -14,21 +14,17 @@ for binary in aws helm kubectl; do
     fi
 done
 
-script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 account_id=$(aws sts get-caller-identity --query Account --output text)
 policy_arn="arn:aws:iam::${account_id}:policy/${POLICY_NAME}"
 
-if ! aws iam get-policy --policy-arn "$policy_arn" >/dev/null 2>&1; then
-    echo "Creating ${POLICY_NAME} for AWS Load Balancer Controller access..."
-    aws iam create-policy \
-        --policy-name "$POLICY_NAME" \
-        --policy-document "file://${script_dir}/../iam_policy.json" >/dev/null
-fi
 
 echo "Attaching ${POLICY_NAME} to ${ROLE_NAME}..."
 aws iam attach-role-policy \
     --role-name "$ROLE_NAME" \
     --policy-arn "$policy_arn"
+
+echo "Updating kubeconfig context for ${CLUSTER_NAME}..."
+aws eks update-kubeconfig --region us-east-1 --name "$CLUSTER_NAME"
 
 helm repo add eks https://aws.github.io/eks-charts >/dev/null 2>&1 || true
 helm repo update eks
