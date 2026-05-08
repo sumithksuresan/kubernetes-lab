@@ -24,6 +24,7 @@ Statement:
       - elasticloadbalancing:DescribeLoadBalancers
       - elasticloadbalancing:DescribeLoadBalancerAttributes
       - elasticloadbalancing:DescribeListeners
+      - elasticloadbalancing:DescribeListenerAttributes      
       - elasticloadbalancing:DescribeRules
       - elasticloadbalancing:DescribeTargetGroups
       - elasticloadbalancing:DescribeTargetGroupAttributes
