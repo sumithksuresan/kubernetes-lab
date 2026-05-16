@@ -36,6 +36,8 @@ fi
 
 echo "Updating kubeconfig context for ${CLUSTER_NAME}..."
 aws eks update-kubeconfig --region "$AWS_REGION" --name "$CLUSTER_NAME"
+echo "Applying aws-auth ConfigMap with NodeInstanceRole: ${node_instance_role}"
+sed "s|rolearn: .*|rolearn: ${node_instance_role}|" "$aws_auth_template" | kubectl apply -f -
 
 helm repo add eks https://aws.github.io/eks-charts >/dev/null 2>&1 || true
 helm repo update eks
@@ -48,8 +50,6 @@ helm upgrade --install "$RELEASE_NAME" eks/aws-load-balancer-controller \
 
 kubectl rollout status deployment/$RELEASE_NAME -n "$NAMESPACE"
 
-echo "Applying aws-auth ConfigMap with NodeInstanceRole: ${node_instance_role}"
-sed "s|rolearn: .*|rolearn: ${node_instance_role}|" "$aws_auth_template" | kubectl apply -f -
 
 echo "Applying nginx deployment..."
 kubectl apply -f "$nginx_manifest"
